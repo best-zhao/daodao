@@ -1,4 +1,4 @@
-import { getAllArticles } from '@/utils'
+import { getAllArticles } from '@/app/utils'
 import styles from "./page.module.css";
 
 
