@@ -1,11 +1,12 @@
 
-async function getAccessToken() {
+export async function getAccessToken() {
   const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${process.env.APP_ID}&secret=${process.env.APP_SECRET}`;
-  const { access_token } = await fetch(url).then(res=>res.json).catch(e=>({}))
-  return access_token;
+  const data = await fetch(url).then(res=>res.json())//.catch(e=>({}))
+  console.log('token', data)
+  return data.access_token;
 }
 
-async function getArticles(accessToken, offset = 0, count = 20) {
+export async function getArticles(accessToken, offset = 0, count = 20) {
   const url = `https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=${accessToken}`;
   const data = {
     type: 'news',
@@ -15,11 +16,11 @@ async function getArticles(accessToken, offset = 0, count = 20) {
   const res = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data)
-  }).then(res=>res.json).catch(e=>({}))
+  }).then(res=>res.json()).catch(e=>({}))
   return res;
 }
 
-async function getAllArticles() {
+export async function getAllArticles() {
   const accessToken = await getAccessToken();
   const pageSize = 50
   let allArticles = [];
@@ -28,6 +29,7 @@ async function getAllArticles() {
 
   do {
     articles = await getArticles(accessToken, offset);
+    console.log(11, accessToken, articles)
     allArticles = allArticles.concat(articles.item);
     offset += pageSize; 
   } while (articles.item.length === pageSize);
