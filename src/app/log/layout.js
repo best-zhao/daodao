@@ -1,3 +1,5 @@
+'use client'
+import '@/app/store'
 import Sign from '@/app/components/Auth/sign'
 
 
